@@ -1,8 +1,11 @@
 const electron = require('electron');
 const dialog = electron.remote.dialog;
 
+// Required to convert the media
+const ffmpeg = require('ffmpeg');
 
 let uploadFile = document.getElementById('upload-file');
+let filePath = undefined;
 
 uploadFile.addEventListener('click', () => {
     // if not macos ( good for you )
@@ -10,7 +13,7 @@ uploadFile.addEventListener('click', () => {
         // Show a file upload dialog,
         dialog.showOpenDialog({
             title: 'Select File To Convert',
-            defaultPath: '~/Desktop',
+            defaultPath: __dirname,
             buttonLabel: 'Convert',
             properties: ['openFile']
             // Then after we select and upload the file,
@@ -18,7 +21,8 @@ uploadFile.addEventListener('click', () => {
             // If usr didn't cancel the upload,
             if (!file.canceled) {
                 // For now just write that we didn't cancel.
-                document.write("Not canceled.");
+                filePath = file.filePaths[0].toString();
+                document.write("File selected: " + filePath);
             } else {
                 // Otherwise, write that we canceled.
                 document.write("Canceled.");

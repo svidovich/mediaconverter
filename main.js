@@ -1,5 +1,4 @@
 const { app, BrowserWindow, dialog } = require('electron');
-const ffmpeg = require('ffmpeg');
 
 function createWindow() {
     // Create the browser window.
