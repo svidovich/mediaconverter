@@ -10,8 +10,25 @@
 
 <body>
     <h1>Media Converter</h1>
+    <br />
     <label for="myfile">Select a file:</label>
     <button type="file" id="upload-file" name="upload-file">Upload...</button>
+    <br />
+    <span id="after-file-upload" style='visibility: hidden'>
+    </span>
+
+    <select id="conversion-types-dropdown" style='visibility: hidden'>
+        <option value="mp3">
+            mp3
+        </option>
+        <option value="wav">
+            wav
+        </option>
+    </select>
+
+    <span id="after-type-selected" style="visibility: hidden;">
+    </span>
+
 </body>
 <script src='index.js'></script>
 

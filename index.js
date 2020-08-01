@@ -22,7 +22,18 @@ uploadFile.addEventListener('click', () => {
             if (!file.canceled) {
                 // For now just write that we didn't cancel.
                 filePath = file.filePaths[0].toString();
-                document.write("File selected: " + filePath);
+                let postUploadSpan = document.getElementById('after-file-upload');
+                let conversionTypesDropdown = document.getElementById('conversion-types-dropdown');
+                postUploadSpan.innerText = `File selected: ${filePath}
+                Select output type:`;
+                postUploadSpan.style.visibility = 'visible';
+                conversionTypesDropdown.style.visibility = 'visible';
+                document.getElementById('conversion-types-dropdown').addEventListener('change', selectedTypeEvent => {
+                    selectedTypeValue = document.getElementById('conversion-types-dropdown').value;
+                    userNotifyTypeSelected = document.getElementById('after-type-selected');
+                    userNotifyTypeSelected.innerText = "\nType Selected: " + selectedTypeValue;
+                    userNotifyTypeSelected.style.visibility = 'visible';
+                })
             } else {
                 // Otherwise, write that we canceled.
                 document.write("Canceled.");
