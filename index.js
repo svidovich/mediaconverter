@@ -34,13 +34,12 @@ uploadFile.addEventListener('click', () => {
                     userNotifyTypeSelected.innerText = "\nType Selected: " + selectedTypeValue;
                     userNotifyTypeSelected.style.visibility = 'visible';
                 })
-            } else {
-                // Otherwise, write that we canceled.
-                document.write("Canceled.");
             }
             // If there was an error, console.log that shit
         }).catch(err => {
             console.log(err);
         })
+    } else {
+        document.write('Not yet supported. Sorry about your luck. File a github issue.')
     }
 })
