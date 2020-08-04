@@ -1,0 +1,33 @@
+button {
+  background-color: #8699d1;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  font-family: 'Lucida Sans Typewriter', Courier, monospace;
+  border-radius: 12px;
+}
+
+h1 {
+    font-family: 'Lucida Sans Typewriter', Courier, monospace;
+}
+
+
+select {
+    font-family: 'Lucida Sans Typewriter', Courier, monospace;
+    background-color: #e8d2ff;
+}
+
+body {
+    font-size: 16px;
+    font-family: 'Lucida Sans Typewriter', Courier, monospace;
+    align-items: center;
+    background-color: #c1d1fd;
+}
+
+span {
+    display:inline-block;
+    padding: 10px;
+}

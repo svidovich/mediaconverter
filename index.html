@@ -3,39 +3,50 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Media Converter!</title>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-    <h1>Media Converter</h1>
-    <br />
-    <label for="myfile">Select a file:</label>
-    <button type="file" id="upload-file" name="upload-file">Upload...</button>
-    <br />
-    <span id="after-file-upload" style='visibility: hidden'>
-    </span>
+    <center>
+        <h1>Media Converter</h1>
+        <br />
+        <button type="file" id="upload-file" name="upload-file">Convert a File...</button>
+        <br />
+        <span id="after-file-upload" style='visibility: hidden'>
+        </span>
+        <br />
+        <span id="conversion-types-text" style='visibility: hidden;'>
+        </span>
+        <br />
+        <select id="conversion-types-dropdown" style='visibility: hidden'>
+            <option value="flac">
+                FLAC
+            </option>
+            <option value="mp3">
+                mp3
+            </option>
+            <option value='ogg'>
+                Ogg Vorbis
+            </option>
+            <option value="wav">
+                WAV
+            </option>
+        </select>
+        <br />
+        <span id="after-type-selected" style="visibility: hidden;">
+        </span>
+        <br />
+        <span id="convert-button-span" style="visibility:hidden;">
+            <button type="convert" id="convert-button" name="convert-button">Convert!</button>
+        </span>
+        <br />
+        <span id="confirmation-span" style="visibility: hidden;">
+        </span>
 
-    <select id="conversion-types-dropdown" style='visibility: hidden'>
-        <option value="mp3">
-            mp3
-        </option>
-        <option value="wav">
-            wav
-        </option>
-    </select>
-
-    <span id="after-type-selected" style="visibility: hidden;">
-    </span>
-    <br />
-    <span id="convert-button-span" style="visibility:hidden;">
-        <button type="convert" id="convert-button" name="convert-button">Convert!</button>
-    </span>
-    <br />
-    <span id="confirmation-span" style="visibility: hidden;">
-    </span>
-
+    </center>
 </body>
 <script src='index.js'></script>
 
