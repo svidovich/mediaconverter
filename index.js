@@ -4,6 +4,8 @@ const path = require('path');
 
 // Required to convert the media
 const ffmpeg = require('js-ffmpeg');
+const fs = require('fs');
+const os = require('os')
 
 let uploadFile = document.getElementById('upload-file');
 let filePath = undefined;
@@ -84,14 +86,20 @@ uploadFile.addEventListener('click', () => {
                             // TODO: Apparently doesn't support files with spaces in them, which is
                             // problematic? Very strange -- I can't seem to get it to work, no matter how
                             // I pad the strings.
-                            ffmpeg.ffmpeg(filePath, [`-f ${selectedTypeValue}`], saveFilePath, progress => {
-                                console.log(progress);
-                            }).success(() => {
-                                confirmation.innerText = "Saved converted file to " + saveFilePath + "!";
-                            }
-                            ).error(error => {
-                                confirmation.innerText = "Failed to convert file. Here's an error message: \n" + error.message;
-                            })
+                            fs.mkdtemp(path.join(os.tmpdir(), 'mediaconvertertmp-'), (error, directory) => {
+                                const temporaryInputFilePath = path.join(directory, 'tmpfilein');
+                                const temporaryOutputFilePath = path.join(directory, 'tmpfileout');
+                                fs.copyFileSync(filePath, temporaryInputFilePath)
+                                ffmpeg.ffmpeg(temporaryInputFilePath, ["-f", selectedTypeValue], temporaryOutputFilePath, progress => {
+                                    console.log(progress);
+                                }).success(() => {
+                                    fs.copyFileSync(temporaryOutputFilePath, saveFilePath)
+                                    confirmation.innerText = "Saved converted file to " + saveFilePath + "!";
+                                }
+                                ).error(error => {
+                                    confirmation.innerText = "Failed to convert file. Here's an error message: \n" + error.message;
+                                })
+                            });
                         }
                     })
                 }
