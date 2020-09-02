@@ -83,10 +83,10 @@ uploadFile.addEventListener('click', () => {
                             confirmation.style.visibility = 'visible';
                             // Run ffmpeg. Do _not_ infer the output type from the save data. Use the info
                             // from the dropdown selection.
-                            // TODO: Apparently doesn't support files with spaces in them, which is
-                            // problematic? Very strange -- I can't seem to get it to work, no matter how
-                            // I pad the strings.
                             fs.mkdtemp(path.join(os.tmpdir(), 'mediaconvertertmp-'), (error, directory) => {
+                                // We need to copy the file temporarily just in case it has spaces in the name.
+                                // When js-ffmpeg calls the ffmpeg binary via docker-polyfill, it splits the arguments
+                                // on spaces; you _cannot_ run it on a file with spaces in the name directly.
                                 const temporaryInputFilePath = path.join(directory, 'tmpfilein');
                                 const temporaryOutputFilePath = path.join(directory, 'tmpfileout');
                                 fs.copyFileSync(filePath, temporaryInputFilePath)
