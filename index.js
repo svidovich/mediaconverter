@@ -84,13 +84,14 @@ uploadFile.addEventListener('click', () => {
 
                             // Run ffmpeg. Do _not_ infer the output type from the save data. Use the info
                             // from the dropdown selection.
-                            let successfulConversion = doConvert(filePath, saveFilePath, selectedTypeValue);
+                            doConvert(filePath, saveFilePath, selectedTypeValue).then(successfulConversion => {
+                                if (successfulConversion === true) {
+                                    confirmation.innerText = "Saved converted file to " + saveFilePath + "!";
+                                } else {
+                                    confirmation.innerText = "Failed to convert file! Try again... " + successfulConversion;
+                                }
+                            });
 
-                            if (successfulConversion === true) {
-                                confirmation.innerText = "Saved converted file to " + saveFilePath + "!";
-                            } else {
-                                confirmation.innerText = "Failed to convert file. Here's an error message: \n" + error.message;
-                            }
 
                         }
                     })
@@ -105,22 +106,24 @@ uploadFile.addEventListener('click', () => {
     }
 })
 
-function doConvert(inputFilePath, outputFilePath, outputType) {
-    fs.mkdtemp(path.join(os.tmpdir(), 'mediaconvertertmp-'), (error, directory) => {
-        // We need to copy the file temporarily just in case it has spaces in the name.
-        // When js-ffmpeg calls the ffmpeg binary via docker-polyfill, it splits the arguments
-        // on spaces; you _cannot_ run it on a file with spaces in the name directly.
-        const temporaryInputFilePath = path.join(directory, 'tmpfilein');
-        const temporaryOutputFilePath = path.join(directory, 'tmpfileout');
-        fs.copyFileSync(inputFilePath, temporaryInputFilePath)
-        ffmpeg.ffmpeg(temporaryInputFilePath, ["-f", outputType], temporaryOutputFilePath, progress => {
-            console.log(progress);
-        }).success(() => {
-            fs.copyFileSync(temporaryOutputFilePath, outputFilePath)
-            return true;
-        }
-        ).error(error => {
-            return false;
+async function doConvert(inputFilePath, outputFilePath, outputType) {
+    return new Promise((resolve, reject) => {
+        fs.mkdtemp(path.join(os.tmpdir(), 'mediaconvertertmp-'), (error, directory) => {
+            // We need to copy the file temporarily just in case it has spaces in the name.
+            // When js-ffmpeg calls the ffmpeg binary via docker-polyfill, it splits the arguments
+            // on spaces; you _cannot_ run it on a file with spaces in the name directly.
+            const temporaryInputFilePath = path.join(directory, 'tmpfilein');
+            const temporaryOutputFilePath = path.join(directory, 'tmpfileout');
+            fs.copyFileSync(inputFilePath, temporaryInputFilePath)
+            ffmpeg.ffmpeg(temporaryInputFilePath, ["-f", outputType], temporaryOutputFilePath, progress => {
+                console.log(progress);
+            }).success(() => {
+                fs.copyFileSync(temporaryOutputFilePath, outputFilePath)
+                resolve(true);
+            }
+            ).error(error => {
+                resolve(false);
+            })
         })
-    });
+    })
 }
