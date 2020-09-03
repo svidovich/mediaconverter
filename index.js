@@ -7,80 +7,57 @@ const ffmpeg = require('js-ffmpeg');
 const fs = require('fs');
 const os = require('os')
 
-let uploadFile = document.getElementById('upload-file');
 let filePath = undefined;
 let dropArea = document.getElementById('drop-area');
-console.log(dropArea);
+
+// Add stylistic changes for when the user drags a file into the interface.
+function highlight(e) {
+    dropArea.classList.add('highlight');
+}
+
+['dragenter', 'dragover'].forEach(eventName => {
+    dropArea.addEventListener(eventName, highlight, false);
+});
+
+
+function unhighlight(e) {
+    dropArea.classList.remove('highlight');
+}
+
+['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, unhighlight, false);
+});
 
 function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();
 }
 
-function highlight(e) {
-    dropArea.classList.add('highlight');
-}
-
-function unhighlight(e) {
-    dropArea.classList.remove('highlight');
-}
-
-function handleFiles(files) {
-    let file = files[0];
-    let filePath = file.path;
-    let fileName = file.name;
-    let fileNameNoExtension = fileName.split('.')[0];
-
-    dialog.showSaveDialog({
-        title: 'Save Converted File',
-        defaultPath: __dirname + "/" + fileNameNoExtension + '.' + selectedTypeValue,
-        buttonLabel: 'Save',
-        properties: [
-            'showOverwriteConfirmation'
-        ]
-    }).then(saveFile => {
-        if (!saveFile.canceled) {
-            // Get information about the output filename and show user.
-            saveFilePath = saveFile.filePath.toString();
-            saveFileDirectory = path.dirname(saveFilePath);
-            saveFileName = path.basename(saveFilePath);
-
-            // Run ffmpeg. Do _not_ infer the output type from the save data. Use the info
-            // from the dropdown selection.
-            doConvert(filePath, saveFilePath);
-        }
-    });
-}
-
-
-['dragenter', 'dragover'].forEach(eventName => {
-    dropArea.addEventListener(eventName, highlight, false);
-});
-
-['dragleave', 'drop'].forEach(eventName => {
-    dropArea.addEventListener(eventName, unhighlight, false);
-});
-
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, preventDefaults, false);
 });
 
-
+// Set the drop handler to be the handleDrop function.
 dropArea.addEventListener('drop', handleDrop, false);
-
 
 let postUploadSpan = document.getElementById('after-file-upload');
 
-// Add event listener for output file type selection dropbox
-let conversionTypesDropdown = document.getElementById('conversion-types-dropdown');
+// This initializes the type to which the user wishes to convert their file. The value is subject
+// to change if the user adjusts their desired file type.
 let selectedTypeValue = document.getElementById('conversion-types-dropdown').value;
 document.getElementById('conversion-types-dropdown').addEventListener('change', selectedTypeEvent => {
     selectedTypeValue = document.getElementById('conversion-types-dropdown').value;
 });
 
-let confirmation = document.getElementById('confirmation-span');
+
+// This is a "progress" section to keep the user occupied while conversion takes place.
 let progressSection = document.getElementById('progress-kind-of');
 
+// This span will have text added to let the user know whether conversion was successful or not.
+let confirmation = document.getElementById('confirmation-span');
+
+// Function that does the actual conversion. Runs ffmpeg and saves the file to the new destination.
+// This doesn't have to be async, but we'll allow it.
 async function doConvert(inputFilePath, outputFilePath) {
     postUploadSpan.innerText = `File selected: ${inputFilePath}!`;
     postUploadSpan.style.visibility = 'visible';
@@ -109,6 +86,45 @@ async function doConvert(inputFilePath, outputFilePath) {
             })
         })
     })
+}
+
+function handleFiles(files) {
+    let file = files[0];
+    let filePath = file.path;
+    let fileName = file.name;
+    let fileNameNoExtension = fileName.split('.')[0];
+    let fileDirectory = path.dirname(filePath);
+    let defaultSavePath = fileDirectory + "/" + fileNameNoExtension + '.' + selectedTypeValue;
+
+    // Determine whether the user wants to save to the same directory as the original file based on
+    // whether the box is checked.
+    let useDirectoryOfInputFile = document.getElementById('retain-original-directory').checked;
+
+    if (useDirectoryOfInputFile) {
+        doConvert(filePath, defaultSavePath);
+    } else {
+        dialog.showSaveDialog({
+            title: 'Save Converted File',
+            defaultPath: defaultSavePath,
+            buttonLabel: 'Save',
+            properties: [
+                'showOverwriteConfirmation'
+            ]
+        }).then(saveFile => {
+            if (!saveFile.canceled) {
+                // Get information about the output filename and show user.
+                saveFilePath = saveFile.filePath.toString();
+                saveFileDirectory = path.dirname(saveFilePath);
+                saveFileName = path.basename(saveFilePath);
+
+                // Run ffmpeg. Do _not_ infer the output type from the save data. Use the info
+                // from the dropdown selection.
+                doConvert(filePath, saveFilePath);
+            }
+        });
+    }
+
+
 }
 
 function handleDrop(e) {

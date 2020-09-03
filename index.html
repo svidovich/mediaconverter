@@ -30,11 +30,17 @@
                 WAV
             </option>
         </select>
+        <br/><br/>
+        <input type="checkbox" id="retain-original-directory" name="retain-original-directory" value="retain" checked />
+        <label for="retain-original-directory">
+            Save converted file to the same directory
+        </label>
         <div id="drop-area">
             <form class="drop-form">
-                <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>
+                <p>Drag & Drop File to Convert!</p>
+                <p align="center">or...</p>
                 <input type="file" id="fileElem" onchange="handleFiles(this.files)">
-                <label class="button" for="fileElem">Select some files</label>
+                <label class="button" for="fileElem">Select File</label>
             </form>
         </div>
         <br />

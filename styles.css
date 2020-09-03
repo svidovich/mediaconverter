@@ -33,9 +33,9 @@ span {
 }
 
 #drop-area {
-  border: 2px dashed #ccc;
+  border: 2px dashed #8699d1;
   border-radius: 20px;
-  width: 480px;
+  width: 250px;
   font-family: sans-serif;
   margin: 100px auto;
   padding: 20px;
@@ -61,7 +61,7 @@ p {
 .button {
   display: inline-block;
   padding: 10px;
-  background: #ccc;
+  background: #e8d2ff;
   cursor: pointer;
   border-radius: 5px;
   border: 1px solid #ccc;
