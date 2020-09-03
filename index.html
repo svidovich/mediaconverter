@@ -12,16 +12,11 @@
 <body>
     <center>
         <h1>Media Converter</h1>
-        <br />
-        <button type="file" id="upload-file" name="upload-file">Convert a File...</button>
-        <br />
-        <span id="after-file-upload" style='visibility: hidden'>
+        <span id="conversion-types-text">
+            Select output type:
         </span>
         <br />
-        <span id="conversion-types-text" style='visibility: hidden;'>
-        </span>
-        <br />
-        <select id="conversion-types-dropdown" style='visibility: hidden'>
+        <select id="conversion-types-dropdown">
             <option value="flac">
                 FLAC
             </option>
@@ -35,17 +30,24 @@
                 WAV
             </option>
         </select>
+        <div id="drop-area">
+            <form class="drop-form">
+                <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>
+                <input type="file" id="fileElem" onchange="handleFiles(this.files)">
+                <label class="button" for="fileElem">Select some files</label>
+            </form>
+        </div>
         <br />
-        <span id="after-type-selected" style="visibility: hidden;">
-        </span>
-        <br />
-        <span id="convert-button-span" style="visibility:hidden;">
-            <button type="convert" id="convert-button" name="convert-button">Convert!</button>
-        </span>
-        <br />
-        <span id="confirmation-span" style="visibility: hidden;">
-        </span>
 
+        <span id="after-file-upload">
+        </span>
+        <br/>
+        <span id="confirmation-span">
+        </span>
+        <marquee direction="down" behavior="alternate" height="400" scrollamount="30">
+            <marquee id="progress-kind-of" behavior="alternate" scrollamount="30">
+            </marquee>
+        </marquee>
     </center>
 </body>
 <script src='index.js'></script>
