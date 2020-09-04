@@ -8,9 +8,27 @@ Supported output types:
 - ogg
 - WAV
 
+FAQ:
+
+Q: Does this work on my WMA files?
+
+A:
+
 >"Hey, this works on my WMA files!"
 
-- @nickvido
+~ @nickvido
+
+Q: Is this a virus?
+
+A: No. Look at the source code. It might be _bad_, but it's not going to hurt anything.
+
+Q: OK why does it _look_ like a virus?
+
+A: DUde I'm a back end dev this is my first electron app what do you? Want?
+
+Q: Where can I just download the installer?
+
+A: I don't know yet. I'm working on that. It's probably got something to do with an S3 bucket? Or maybe like, my house?
 
 ## Getting started
 
@@ -51,3 +69,5 @@ $ ./build-windows.sh
 - Installer script for packing rpms
 - Multiple file convert dragitude
 - More supported output types
+- Test the Windows installer
+- Host the installers somewhere
