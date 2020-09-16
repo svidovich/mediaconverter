@@ -49,7 +49,7 @@ The application should start and you'll be able to test it out.
 
 ## Packaging
 
-You can package for Debian or for Windows using the included scripts. 
+You can package for Debian or for Windows using the included scripts.
 
 To package for Debian, from the top of the repository,
 
@@ -67,7 +67,6 @@ $ ./build-windows.sh
 ## TODOs
 
 - Installer script for packing rpms
-- Multiple file convert dragitude
 - More supported output types
 - Test the Windows installer
 - Host the installers somewhere
