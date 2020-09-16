@@ -88,8 +88,8 @@ async function doConvert(inputFilePath, outputFilePath) {
     })
 }
 
-function handleFiles(files) {
-    let file = files[0];
+function handleFiles(file) {
+    // let file = files[0];
     let filePath = file.path;
     let fileName = file.name;
     let fileNameNoExtension = fileName.split('.')[0];
@@ -130,5 +130,13 @@ function handleFiles(files) {
 function handleDrop(e) {
     let dt = e.dataTransfer;
     let files = dt.files;
-    handleFiles(files);
+    console.log(Object.entries(files));
+    Object.entries(files).map(
+        filesArray => {
+            // In the object returned during dataTransfer, the File object
+            // is the second entry when it comes back from the Object.entries
+            // API call.
+            handleFiles(filesArray[1]);
+        }
+    );
 }
