@@ -60,7 +60,9 @@ $ ./build-dpkg.sh
 To package for Windows, from the top of the repository,
 
 ```
-# apt install wine wine-development
+$ apt install wine-development mono-runtime libmono-system-core4.0-cil libmono-system-componentmodel-composition4.0-cil libmono-microsoft-build-utilities-v4.0-4.0-cil  libmono-system-componentmodel-dataannotations4.0-cil libmono-system-net-http4.0-cil libmono-system-windows4.0-cil libmono-system-windows-forms4.0-cil libmono-windowsbase4.0-cil
+$ npm install electron-packager -g
+$ npm install electron-installer-windows -g
 $ ./build-windows.sh
 ```
 
